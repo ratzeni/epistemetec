@@ -71,7 +71,7 @@ class SearchingClass extends SearchClass {
 			}
 		}
 		
-		drupal_goto("fedora/repository/mnpl_advanced_search/$searchString");
+		drupal_goto("fedora/repository/epistemetec_search/$searchString");
 	}
 }
 ?>
