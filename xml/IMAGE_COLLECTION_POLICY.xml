@@ -2,7 +2,7 @@
   <contentmodels> 
     <contentmodel name="epistemetec_jpeg"> 
       <pid_namespace>epistemetec-img:</pid_namespace> 
-      <pid>epistemetec:DemoIglesias</pid> 
+      <pid>epistemetec:imageCModel</pid> 
       <dsid>ISLANDORACM</dsid> 
     </contentmodel> 
   </contentmodels> 

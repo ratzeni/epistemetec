@@ -12,6 +12,32 @@ function epistemetec_block($op = 'list', $delta = 0, $edit = array ()) {
 			$blocks[0]['info'] = t('Epistemetec');
 			return $blocks;
 
+		 case 'configure':
+      // If $op is "configure", we need to provide the administrator with a
+      // configuration form. The $delta parameter tells us which block is being
+      // configured. In this example, we'll allow the administrator to customize
+      // the text of the first block.
+      $form = array();
+      if ($delta == 0) {
+        // All we need to provide is a text field, Drupal will take care of
+        // the other block configuration options and the save button.
+//       $form['epistemetec_block_repeat'] = array(
+//          '#type' => 'textfield',
+//          '#title' => t('Number of times to repeat search fields'),
+//          '#size' => 5,
+//          '#description' => t('The number of times you would like the search blocks to be repeated'),
+//          '#default_value' => variable_get('fedora_repository_advanced_block_repeat', t('3')),
+//        );
+//        $form['fepistemetec_block_hist'] = array(
+//          '#type' => 'textfield',
+//          '#title' => t('Number of hits per page'),
+//          '#size' => 5,
+//          '#description' => t('The number of hits you would like the search blocks shows'),
+//          '#default_value' => variable_get('fedora_repository_advanced_block_hist', t('10')),
+//        );
+      }
+      return $form;
+      
 		case 'view' :
 		default :
 			$block['subject'] = t('Epistemetec Form');
@@ -31,29 +57,29 @@ function epistemetec_theme() {
 	);
 }
 function epistemetec_home_search_form() {
-	module_load_include('php', 'Epistemetec', 'SearchingClass');
+	module_load_include('php', 'Fedora_Repository', 'epistemetec/SearchingClass');
 	$searchClass = new SearchingClass();
 	return $searchClass->build_home_search_form();
 }
 
 function theme_epistemetec_home_search_form($form) {
-	module_load_include('php', 'Epistemetec', 'SearchingClass');
+	module_load_include('php', 'Fedora_Repository', 'epistemetec/SearchingClass');
 	$home_search_form = new SearchingClass();
 	return $home_search_form->theme_home_search_form($form);
 
 }
 
 function epistemetec_home_search_form_submit($form, & $form_state) {
-	module_load_include('php', 'Epistemetec', 'SearchingClass');
+	module_load_include('php', 'Fedora_Repository', 'epistemetec/SearchingClass');
 	$searchClass = new SearchingClass();
 	$searchClass->submit_home_search_form($form, & $form_state);
 
 }
 
 function epistemetec_home_search($query, $startPage = 1) {
-	module_load_include('php', 'Epistemetec', 'SearchingClass');
+	module_load_include('php', 'Fedora_Repository', 'epistemetec/SearchingClass');
 	$searchClass = new SearchingClass();
-	return $searchClass->custom_search($query, $startPage);
+	return $searchClass->custom_search($query, $startPage,'/epistemetec/xsl/advanced_search_results.xsl');
 }
 
 function epistemetec_nodeapi(& $node, $op, $a3 = NULL, $a4 = NULL) {
@@ -71,7 +97,7 @@ function epistemetec_nodeapi(& $node, $op, $a3 = NULL, $a4 = NULL) {
 
 		$pid = $node->field_fedora_pid[0]['value'];
 		$terms = taxonomy_node_get_terms_by_vocabulary($node, 1);
-		module_load_include('php', 'Fedora_Repository', 'plugins/EpistemetecFormBuilder');
+		module_load_include('php', 'Fedora_Repository', 'epistemetec/plugins/FormBuilder');
 		//		foreach ($terms as $term) 	
 		//				drupal_set_message($term->name."\n");
 		$form = new EpistemetecFormBuilder();
@@ -90,7 +116,7 @@ function epistemetec_form_alter(& $form, $form_state, $form_id) {
 			$form['#submit'][] = 'epistemetec_purge_submit';
 
 			break;
-			
+
 			case 'fedora_repository_edit_qdc_form' :
 				$form['#submit'][] = 'epistemetec_edit_qdc_submit';
 			break;
@@ -99,10 +125,10 @@ function epistemetec_form_alter(& $form, $form_state, $form_id) {
 }
 
 function epistemetec_purge_submit($form, & $form_state) {
-	
+
 			$pid = $form_state['values']['pid'];
 
-			module_load_include('php', 'Fedora_Repository', 'plugins/EpistemetecNode');
+			module_load_include('php', 'Fedora_Repository', 'epistemetec/plugins/Node');
 			$node = new EpistemetecNode();
 
 			$node->deleteNode($pid);
@@ -134,15 +160,15 @@ function epistemetec_purge_submit($form, & $form_state) {
 				$collectionPid = $_SESSION['fedora_collection'];
 			}
 			$form_state['redirect'] = "fedora/repository/$collectionPid/";
-			
+
 }
 
 function epistemetec_edit_qdc_submit($form, & $form_state) {
 	$ccks = array ();
-		module_load_include('php', 'Fedora_Repository', 'plugins/EpistemetecNode');
+		module_load_include('php', 'Fedora_Repository', 'epistemetec/plugins/Node');
 		$node = new EpistemetecNode();
 		$ccks = $node->hashCCK($form_state['values'],COLLECTION_DL,TRUE);
 		//echo "<br><pre>";print_r($form_values);echo "</pre>";exit;
 		$node->editNode($ccks);
-	
+
 }
