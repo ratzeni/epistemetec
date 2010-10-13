@@ -45,7 +45,7 @@ class SearchingClass extends SearchClass {
 
 		$form['submit'] = array (
 			'#type' => 'submit',
-			'#value' => t('search it')
+			'#value' => t('search')
 		);
 		return $form;
 	}
