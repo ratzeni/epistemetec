@@ -1,0 +1,26 @@
+diff --git ObjectHelper.php ObjectHelper.php
+index 9ec0318..729b50b 100644
+--- ObjectHelper.php
++++ ObjectHelper.php
+@@ -569,7 +569,8 @@ class ObjectHelper {
+ 
+     if (!empty ( $contentModels ) ) {
+       foreach($contentModels as $contentModel) {
+-        if ($contentModel == 'islandora:collectionCModel') {
++        if ($contentModel == 'epistemetec:albumCModel' || $contentModel == 'epistemetec:compilationCModel'
++        || $contentModel == 'epistemetec:videotecaCModel') {
+           $_SESSION['fedora_collection'] = $pid;
+           $isCollection=true;
+         }
+diff --git formClass.php formClass.php
+index 95a7ace..4196c99 100644
+--- formClass.php
++++ formClass.php
+@@ -121,7 +121,6 @@ class formClass {
+             'access arguments' => array('view fedora collection')
+     );
+ 
+-	
+     $items['fedora/ingestObject'] = array (
+         'title' => t('Ingest Object'),
+       'page callback' => 'fedora_repository_ingest_object',
