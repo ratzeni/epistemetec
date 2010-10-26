@@ -1,0 +1,33 @@
+<?php
+module_load_include('php', 'SimpleTest', 'drupal_web_test_case');
+class EpistemetecTest extends DrupalUnitTestCase {
+	
+	public static function getInfo() {
+   return array(
+     'name' => 'Epistemetec',
+     'description' => t('The fedora repository content models.'),
+     'group' => t('Epistemetec'),
+   );
+ }
+ 
+	function setUp() {
+   parent::setUp('fedora_repository');
+
+   module_load_include('php', 'fedora_repository', 'api/fedora_item');
+   module_load_include('php', 'fedora_repository', 'ConnectionHelper');
+   module_load_include('php', 'fedora_repository', 'ObjectHelper');
+   module_load_include('php', 'fedora_repository', 'epistemetec/plugins/ObjectHelper');
+   
+
+ }
+	function testGetMagData() {
+		//include('../epistemetec/plugins/ObjectHelper.php');
+		//require_once('./'. drupal_get_path('module', 'fedora_repository') .'/ConnectionHelper.php');
+		//require_once('./'. drupal_get_path('module', 'fedora_repository') .'/ObjectHelper.php');
+		//require_once('./'. drupal_get_path('module', 'fedora_repository') .'/epistemetec/plugins/ObjectHelper.php');
+    
+		$obj = new ObjectEpistemetecHelper();
+		$result = $obj->getMagData('epistemetec-img:55');
+	}
+}
+?>
