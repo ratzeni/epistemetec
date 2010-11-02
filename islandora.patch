@@ -1,5 +1,5 @@
 diff --git ObjectHelper.php ObjectHelper.php
-index 9ec0318..729b50b 100644
+index 9ec0318..8ef239a 100644
 --- ObjectHelper.php
 +++ ObjectHelper.php
 @@ -569,7 +569,8 @@ class ObjectHelper {
@@ -8,19 +8,54 @@ index 9ec0318..729b50b 100644
        foreach($contentModels as $contentModel) {
 -        if ($contentModel == 'islandora:collectionCModel') {
 +        if ($contentModel == 'epistemetec:albumCModel' || $contentModel == 'epistemetec:compilationCModel'
-+        || $contentModel == 'epistemetec:videotecaCModel') {
++        || $contentModel == 'epistemetec:videotecaCModel' || $contentModel == 'epistemetec:collectionCModel') {
            $_SESSION['fedora_collection'] = $pid;
            $isCollection=true;
          }
+diff --git SearchClass.php SearchClass.php
+index 6f3c082..2a024bf 100644
+--- SearchClass.php
++++ SearchClass.php
+@@ -139,7 +139,7 @@ class SearchClass {
+       //var_dump($resultData);exit(0);
+       //	$doc = new DOMDocument();
+       //	$doc->loadXML($resultData);
+-
++     
+       $output.=$this->applyLuceneXSLT($resultData,$startPage,$xslt,$query);
+       return $output;
+ 
+@@ -307,7 +307,7 @@ class SearchClass {
+ 
+     $input = new DomDocument();
+     $didLoadOk = $input->loadXML($resultData);
+-
++  
+     if (!isset($didLoadOk)) {
+       drupal_set_message(t('Error loading search results!'));
+       return t('Error loading search results! ');
 diff --git formClass.php formClass.php
-index 95a7ace..4196c99 100644
+index 95a7ace..06ad6a7 100644
 --- formClass.php
 +++ formClass.php
-@@ -121,7 +121,6 @@ class formClass {
+@@ -121,7 +121,12 @@ class formClass {
              'access arguments' => array('view fedora collection')
      );
  
 -	
++//	 $items['fedora/repository/epistemetec_search'] = array (
++//          'title' => t('Repository Advanced Search'),
++//           'page callback' => 'epistemetec_home_search',
++//            'type'=> MENU_CALLBACK,
++//            'access arguments' => array('view fedora collection')
++//    ); 
      $items['fedora/ingestObject'] = array (
          'title' => t('Ingest Object'),
        'page callback' => 'fedora_repository_ingest_object',
+@@ -661,4 +666,4 @@ class formClass {
+   
+ 
+ }
+-?>
++?>
+\ No newline at end of file
